@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { addTodo } from './config/redux/reducers/todoSlice'
+import { addTodo, removeTodo, editTodo } from './config/redux/reducers/todoSlice'
 
 const App = () => {
 
@@ -17,6 +17,20 @@ const App = () => {
         }))
     }
 
+    const editedTodo = (index) => {
+        const newTodo = prompt("Enter new edited Todo:")
+        dispatch(editTodo({
+            title: newTodo,
+            index
+        }))
+    }
+
+    const delTodo = (index) => {
+        dispatch(removeTodo({
+            index
+        }))
+    }
+
     return (
         <div>
             <h1>Todo App</h1>
@@ -25,14 +39,29 @@ const App = () => {
                 <button>Add Todo</button>
             </form>
 
-            <ol>
+            {/* <ol>
                 {selector.map((item, index) =>
                     <li key={item.id}>{item.title}
                         <button onClick={() => deleteTodo(index)}>delete</button>
                         <button onClick={() => updateTodo(index)}>edit Todo</button>
                     </li>
                 )}
-            </ol>
+            </ol> */}
+
+            <ul>
+                {selector ? 
+                    selector.map((item, index) => (
+                        <li key={item.id}>
+                            {item.title}
+                            <button onClick={() => editedTodo(index)}>Edit</button>
+                            <button onClick={() => delTodo(index)}>Delete</button>
+
+                        </li>
+                    )) : <h1>No todo found</h1>
+
+                }
+            </ul>
+
 
         </div>
     )
